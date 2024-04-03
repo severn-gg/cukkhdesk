@@ -47,16 +47,14 @@ class Api extends BaseController
                     'nama_group' => 'required'
                 ]);
                 break;
-            case "order":
+            case "kategoritiket":
                 // Validate incoming data    
                 $validation->setRules([
-                    'customer_id' => 'required',
-                    'order_date' => 'required',
-                    'status' => 'required',
-                    'packagekategori_id' => 'required'
+                    'nama_kategori' => 'required',
+                    'deskripsi' => 'required'
                 ]);
                 break;
-            case "orderdetail":
+            case "tiket":
                 // Validate incoming data    
                 $validation->setRules([
                     'order_id' => 'required',

@@ -20,7 +20,7 @@ class ApiModel extends Model
             }
 
             if ($db->affectedRows() === 0) {
-                throw new \Exception("No records were affected."); // Throw exception if no records affected
+                return ("No records were affected."); // Throw exception if no records affected
             }
 
             return true; // Return true if insertion or update succeeds
