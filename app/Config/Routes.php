@@ -7,4 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->post('/api/insert', 'api\Api::insert');
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {    
+    $routes->post('insert', 'Api::insert');
+    $routes->get('get', 'Api::get');
+    $routes->post('delete', 'Api::delete');
+});

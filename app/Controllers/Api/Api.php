@@ -33,12 +33,12 @@ class Api extends BaseController
             case "user":
                 // Validate incoming data    
                 $validation->setRules([
-                    'nama_user' => 'required',
-                    'password' => 'required',
+                    'nama_pengguna' => 'required',
+                    'password_hash' => 'required',
                     'usergroup_id' => 'required',
-                    'no_hp' => 'required',
-                    'BO_tugas' => 'required',
+                    'nomor_telepon' => 'required',                    
                     'jabatan' => 'required',
+                    'kantor' => 'required',
                 ]);
                 break;
             case "usergroup":
@@ -57,8 +57,10 @@ class Api extends BaseController
             case "tiket":
                 // Validate incoming data    
                 $validation->setRules([
-                    'order_id' => 'required',
-                    'package_id' => 'required'
+                    'user_id' => 'required',
+                    'kategori_id' => 'required',
+                    'tgl_buat' => 'required',
+                    'deskripsi' => 'required'
                 ]);
                 break;
             case "partner":
@@ -137,7 +139,28 @@ class Api extends BaseController
     }
 
     public function get()
-    {}
+    {
+        $requestBody = $this->request->getBody();
+        $jsonData = json_decode($requestBody, true);
+
+        if (empty($jsonData['table'])) {
+            return $this->failServerError('Need specified the Table');
+        }
+
+        $table = $jsonData['table'];
+
+        $id = isset($jsonData['id']) && !empty($jsonData['id']) ? (int)$jsonData['id'] : null;
+
+        $morders = new ApiModel();
+
+        $result = $morders->get($table, $id);
+
+        if ($result['status'] === true) {
+            return $this->respond($result, 200);
+        } else {
+            return $this->respond($result, 404);
+        }
+    }
 
     public function delete()
     {}
