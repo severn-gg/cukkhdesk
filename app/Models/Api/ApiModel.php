@@ -74,4 +74,23 @@ class ApiModel extends Model
         }
     }
 
+    public function delete_table($table, $id)
+    {
+        try {
+            $db = \Config\Database::connect();
+            $query = $db->table($table);
+                        
+            $idd = $table . '_id'; // Construct the ID field name
+            $query->where($idd, $id)->delete();            
+
+            if ($db->affectedRows() === 0) {
+                return ("No records were affected."); // Throw exception if no records affected
+            }
+
+            return true; // Return true if insertion or update succeeds
+        } catch (CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return $e->getMessage(); // Return the error message
+        }
+    }
+
 }

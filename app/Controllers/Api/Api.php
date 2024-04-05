@@ -10,15 +10,11 @@ use App\Models\Api\ApiModel;
 class Api extends BaseController
 {
     use ResponseTrait;
-    
-    public function index()
-    {
-        //
-    }
 
+    //insert jika manyertakan id adalah update
     public function insert()
     {
-        // Get the incoming JSON data as an array
+        // ambil data yang dikirimkan
         $requestBody = $this->request->getBody();
         $validation = \Config\Services::validation();
         $jsonData = json_decode($requestBody, true);
@@ -30,8 +26,14 @@ class Api extends BaseController
         $table = $jsonData['table'];
 
         switch ($table) {
+            case "usergroup":
+                // Validasi data
+                $validation->setRules([
+                    'nama_group' => 'required'
+                ]);
+                break;
             case "user":
-                // Validate incoming data    
+                // Validasi data
                 $validation->setRules([
                     'nama_pengguna' => 'required',
                     'password_hash' => 'required',
@@ -40,22 +42,16 @@ class Api extends BaseController
                     'jabatan' => 'required',
                     'kantor' => 'required',
                 ]);
-                break;
-            case "usergroup":
-                // Validate incoming data    
-                $validation->setRules([
-                    'nama_group' => 'required'
-                ]);
-                break;
-            case "kategoritiket":
-                // Validate incoming data    
+                break;            
+            case "tiketkategori":
+                // Validasi data
                 $validation->setRules([
                     'nama_kategori' => 'required',
                     'deskripsi' => 'required'
                 ]);
                 break;
             case "tiket":
-                // Validate incoming data    
+                // Validasi data
                 $validation->setRules([
                     'user_id' => 'required',
                     'kategori_id' => 'required',
@@ -69,59 +65,17 @@ class Api extends BaseController
                     'url_gambar' => 'required'
                 ]);
                 break;
-            case "partner":
-                // Validate incoming data    
+            case "komentar":
+                // Validasi data
                 $validation->setRules([
-                    'partner_name' => 'required',
-                    'partner_type' => 'required',
-                    'email' => 'required|valid_email',
-                    'phone_number' => 'required',
-                    'address' => 'required'
-                ]);
-                break;
-            case "package":
-                // Validate incoming data    
-                $validation->setRules([
-                    'package_name' => 'required',
-                    'description' => 'required',
-                    'price' => 'required',
-                    'packagekategori_id' => 'required'
-                ]);
-                break;
-            case "packagekategori":
-                // Validate incoming data    
-                $validation->setRules([
-                    'kategori' => 'required',
-                ]);
-                break;
-            case "percentage":
-                // Validate incoming data    
-                $validation->setRules([
-                    'partner_id' => 'required',
-                    'percentage' => 'required',
-                ]);
-                break;
-            case "payment":
-                // Validate incoming data    
-                $validation->setRules([
-                    'order_id' => 'required',
-                    'amount' => 'required',
-                    'payment_date' => 'required',
-                    'payment_type' => 'required',
-                ]);
-                break;
-            case "eventdetail":
-                // Validate incoming data    
-                $validation->setRules([
-                    'order_id' => 'required',
-                    'event_date' => 'required',
-                    'event_address' => 'required',
-                    'reception_address' => 'required',
-                    'event_start_time' => 'required',
+                    'tiket_id' => 'required',
+                    'user_id' => 'required',
+                    'dibuat_pada' => 'required|valid_email',
+                    'teks_komentar' => 'required'
                 ]);
                 break;
             default:
-                return $this->failServerError('Invalid table specified');
+                return $this->failServerError('Salah inputan table!');
         }
 
         $id = isset($jsonData['id']) && !empty($jsonData['id']) ? (int)$jsonData['id'] : null;
@@ -129,38 +83,42 @@ class Api extends BaseController
         if (!$validation->run($data)) {
             return $this->failValidationErrors($validation->getErrors());
         }
-
-        // Continue with your logic for each case
-        // Insert data into the database
+        
+        // Insert data ke database
         $partnerModel = new ApiModel();
         $result = $partnerModel->insert_table($data, $table, $id);
 
+        // pengiriman response 
         if ($result === true && $id !== null) {
             return $this->respondCreated(['message' => 'Data Updated successfully']);
         } elseif ($result === true && $id === null) {
             return $this->respondCreated(['message' => 'Data Inserted successfully']);
         } else {
-            return $this->fail($result); // Include the error message
+            return $this->fail($result);
         }
     }
 
+    // get jika menyertakan ID, maka : select where
     public function get()
     {
+        // ambil data yang dikirimkan
         $requestBody = $this->request->getBody();
         $jsonData = json_decode($requestBody, true);
 
+        // cek jika data kosong
         if (empty($jsonData['table'])) {
-            return $this->failServerError('Need specified the Table');
+            return $this->failServerError('Perlu mencantumkan nama Table!');
         }
 
+        // menyimpan data kiriman ke dalam variable
         $table = $jsonData['table'];
-
         $id = isset($jsonData['id']) && !empty($jsonData['id']) ? (int)$jsonData['id'] : null;
 
+        // inisialisasi model dan ambil data dari database
         $morders = new ApiModel();
-
         $result = $morders->get($table, $id);
 
+        // pengiriman response 
         if ($result['status'] === true) {
             return $this->respond($result, 200);
         } else {
@@ -169,6 +127,47 @@ class Api extends BaseController
     }
 
     public function delete()
-    {}
+    {
+        // ambil data yang dikirimkan
+        $requestBody = $this->request->getBody();
+        $validation = \Config\Services::validation();
+        $jsonData = json_decode($requestBody, true);
+
+        // cek jika data kosong
+        if (empty($jsonData['table'])) {
+            return $this->failServerError('No table specified');
+        }
+
+        // tempatkan data ke dalam variable
+        $table = $jsonData['table'];
+        $id = (int)$jsonData['id'];
+
+        // validasi nama table
+        switch ($table) {
+            case "usergroup":                
+                break;
+            case "user":                
+                break;            
+            case "tiketkategori":                
+                break;
+            case "tiket":                
+                break;
+            case "komentar":                
+                break;
+            default:
+                return $this->failServerError('Salah inputan table!');
+        }        
+        
+        // Delete data from the database
+        $partnerModel = new ApiModel();
+        $result = $partnerModel->delete_table($table, $id);
+
+        // kirimkan response
+        if ($result === true) {
+            return $this->respondCreated(['message' => 'Data Successfully Deleted']);
+        } else {
+            return $this->fail($result);
+        }
+    }
 
 }
