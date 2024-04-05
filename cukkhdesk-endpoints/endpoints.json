@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "41c86093-b57b-4f1c-9bc4-66ff16d613e4",
+		"name": "hdesk-cukk",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "insert_usergroup",
+			"id": "3f01abf7-d91e-443c-8a6c-a702e00be636",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\":\"usergroup\",\r\n    \"id\":\"\",\r\n    \"data\":[\r\n        {           \r\n            \"nama_group\":\"user\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/insert"
+			},
+			"response": []
+		},
+		{
+			"name": "insert_user",
+			"id": "890b093a-6c43-440a-873a-48682f441ff6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\":\"user\",\r\n    \"id\":\"\",\r\n    \"data\":[\r\n        {           \r\n            \"nama_pengguna\":\"tendoo\",\r\n            \"password_hash\": \"123456!\",\r\n            \"usergroup_id\": \"5\",\r\n            \"nomor_telepon\": \"0867652347\",\r\n            \"jabatan\": \"Staf ITD\",\r\n            \"kantor\": \"HO\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/insert"
+			},
+			"response": []
+		},
+		{
+			"name": "insert_kategoritiket",
+			"id": "f72f1551-aa06-448b-a5a2-3a5a8fc51e78",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\":\"kategoritiket\",\r\n    \"id\":\"\",\r\n    \"data\":[\r\n        {           \r\n            \"nama_kategori\":\"LKD\",\r\n            \"deskripsi\":\"Masalah sehubungan dengan ATM,KKD\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/insert"
+			},
+			"response": []
+		},
+		{
+			"name": "insert_tiker",
+			"id": "818ab0d4-bba4-4a5f-97f5-be9c0bd89d8d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\":\"tiket\",\r\n    \"id\":\"\",\r\n    \"data\":[\r\n        {           \r\n            \"kategoritiket_id\":\"1\",\r\n            \"tanggal\":\"2024-04-03\",\r\n            \"deskripsi\":\"jaringan RTO\",\r\n            \"user_salah\":\"nopi/kasir\",\r\n            \"BO_tugas\":\"HO\",\r\n            \"jabatan\":\"Staf ITD\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/insert"
+			},
+			"response": []
+		},
+		{
+			"name": "get",
+			"id": "8aa8278a-3cf9-470e-b570-9b6bc97a4f10",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\":\"usergroup\",\r\n    \"id\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/get"
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"id": "481cb786-7744-4ebb-87b5-3ff6e51a7ec3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\":\"usersgroup\",\r\n    \"id\":\"5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/delete"
+			},
+			"response": []
+		}
+	]
+}
