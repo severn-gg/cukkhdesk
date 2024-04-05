@@ -59,8 +59,14 @@ class Api extends BaseController
                 $validation->setRules([
                     'user_id' => 'required',
                     'kategori_id' => 'required',
-                    'tgl_buat' => 'required',
-                    'deskripsi' => 'required'
+                    'status' => 'required',
+                    'prioritas' => 'required',
+                    'kategori_id' => 'required',
+                    'dibuat_pada' => 'required',
+                    'deskripsi' => 'required',
+                    'ditugaskan_user_id' => 'required',
+                    'nama_file' => 'required',
+                    'url_gambar' => 'required'
                 ]);
                 break;
             case "partner":
