@@ -8,7 +8,9 @@ newbi & simple - pengemabnga aplikasi helpdesk cukk, terkait perapian penanganan
 
 `fork repo ini` lalu `composer update`
 
-jika ada commit di main reapo `app` folder. lalkukan di repo anda
+jika ada commit di main reapo `app` folder. lalkukan ini pada terminla terlebih dahulu di repo anda
+`git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git`
+lalu untuk pull/sync dengan main
 `git merge upstream/master master` atau `git rebase upstream/master`.
 
 ## Setup
