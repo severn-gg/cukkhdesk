@@ -11,6 +11,62 @@ class Api extends BaseController
 {
     use ResponseTrait;
 
+    // login api
+    public function login()
+    {
+        // Get request body
+        $requestBody = $this->request->getBody();
+        $validation = \Config\Services::validation();
+        $jsonData = json_decode($requestBody, true);
+
+        // Validate JSON data
+        if (!$jsonData || !isset($jsonData['username']) || !isset($jsonData['password'])) {
+            return $this->failUnauthorized('Invalid username or password');
+        }
+
+        $username = $jsonData['username'];
+        $password = $jsonData['password'];
+
+        // Fetch user from database
+        $morders = new ApiModel();
+        $result = $morders->get('user', null, ['username' => $username]);
+
+        if (!$result['status'] || empty($result['data'])) {
+            return $this->failUnauthorized('User not found');
+        }
+
+        $userData = $result['data'][0];
+
+        // Check if user is active
+        if ($userData['active'] !== "1") {
+            return $this->failUnauthorized('User belum di restui Admin!');
+        }
+
+        // Verify password
+        if ($password !== $userData['password_hash']) {
+            return $this->failUnauthorized('Incorrect password');
+        }
+
+        // Set session data
+        $session = session();
+        $sessionData = [
+            'username'       => $userData['username'],
+            'nama_pengguna'  => $userData['nama_pengguna'],
+            'usergroup_id'   => $userData['usergroup_id'],
+            'nomor_telepon' => $userData['nomor_telepon'],
+            'jabatan'        => $userData['jabatan'],
+            'kantor'         => $userData['kantor'],
+        ];
+        $session->set($sessionData);
+
+        $response = [
+            'status' => true,
+            'message' => "Sukses Login",
+            'data' => $sessionData
+        ];
+        return $this->respond($response, 200);
+    }
+
     //insert jika manyertakan id adalah update
     public function insert()
     {
@@ -36,6 +92,8 @@ class Api extends BaseController
                 // Validasi data
                 $validation->setRules([
                     'nama_pengguna' => 'required',
+                    'username' => 'required',
+                    'active' => 'required',
                     'password_hash' => 'required',
                     'usergroup_id' => 'required',
                     'nomor_telepon' => 'required',                    
@@ -54,10 +112,9 @@ class Api extends BaseController
                 // Validasi data
                 $validation->setRules([
                     'user_id' => 'required',
-                    'kategori_id' => 'required',
+                    'tiketkategori_id' => 'required',
                     'status' => 'required',
-                    'prioritas' => 'required',
-                    'kategori_id' => 'required',
+                    'prioritas' => 'required',                    
                     'dibuat_pada' => 'required',
                     'deskripsi' => 'required',
                     'ditugaskan_user_id' => 'required',

@@ -29,7 +29,7 @@ class ApiModel extends Model
         }
     }
 
-    public function get($table, $id = null)
+    public function get($table, $id = null, $where = [])
     {
         $db = \Config\Database::connect();
 
@@ -37,38 +37,32 @@ class ApiModel extends Model
             $query = $db->table($table);
 
             if ($id !== null) {
-                $idd = $table . '_id'; // Construct the ID field name
-                $query->where($idd, $id);
-                $result = $query->get()->getRow();
-
-                if (!$result) {
-                    return [
-                        'status' => false,
-                        'msg' => "Id not found",
-                        'data' => null
-                    ];
-                }
-            } else {
-                $result = $query->get()->getResultArray();
+                $query->where($table . '_id', $id);
             }
+
+            if (!empty($where)) {
+                $query->where($where);
+            }
+
+            $result = $query->get()->getResultArray();
 
             if (empty($result)) {
                 return [
                     'status' => true,
-                    'msg' => "No data in table",
+                    'message' => "No data in table",
                     'data' => null
                 ];
             }
 
             return [
                 'status' => true,
-                'msg' => "Data fetched successfully",
+                'message' => "Data fetched successfully",
                 'data' => $result
             ];
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
             return [
                 'status' => false,
-                'msg' => $e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null
             ];
         }
