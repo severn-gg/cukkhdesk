@@ -14,12 +14,12 @@ class Api extends BaseController
     // login api
     public function login()
     {
-        // Get request body
+        // Get request bodi
         $requestBody = $this->request->getBody();
         $validation = \Config\Services::validation();
         $jsonData = json_decode($requestBody, true);
 
-        // Validate JSON data
+        // Validat JSON data
         if (!$jsonData || !isset($jsonData['username']) || !isset($jsonData['password'])) {
             return $this->failUnauthorized('Invalid username or password');
         }
@@ -37,7 +37,7 @@ class Api extends BaseController
 
         $userData = $result['data'][0];
 
-        // Check if user is active
+        // Check if user active
         if ($userData['active'] !== "1") {
             return $this->failUnauthorized('User belum di restui Admin!');
         }
