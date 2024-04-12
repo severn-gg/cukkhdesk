@@ -7,9 +7,20 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\Api\ApiModel;
 
+
 class Api extends BaseController
 {
     use ResponseTrait;
+
+    public function options()
+    {
+        // Respond to preflight OPTIONS request
+        return $this->response->setHeader('Access-Control-Allow-Origin', '*')
+        ->setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With')
+        ->setStatusCode(200)
+        ->setBody('OK'); // Optionally, you can set a response body
+    }
 
     // login api
     public function login()
